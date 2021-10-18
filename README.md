@@ -1,4 +1,4 @@
-# PedroS_CSW41
+# PedroSplendore_CSW41
 Project for Embedded systems course
 
 Onde aparece a mensagem do "hello world"

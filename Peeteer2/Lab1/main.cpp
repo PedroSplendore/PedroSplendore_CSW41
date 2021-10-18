@@ -1,8 +1,11 @@
+//Aluno :PEDRO ROMANO SPLENDORE
+
 #include <string.h>
 #include <iostream>
+using namespace std;
 
 int main()
 {
-  printf("Hello World");
+  cout << "hello world";
   return 0;
 }

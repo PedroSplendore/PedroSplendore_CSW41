@@ -2,4 +2,4 @@
 Project for Embedded systems course
 
 Onde aparece a mensagem do "hello world"
-R. Não consegui vê-la, porém acredito que seria no Debug log.
+R. A mensagem "Hello World" é exibida no painel de inputs e outputs, gerado pelo IAR.

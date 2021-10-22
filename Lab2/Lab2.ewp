@@ -2095,6 +2095,9 @@
         <name>Source</name>
         <file>
             <name>$PROJ_DIR$\src\blinky.c</name>
+            <excluded>
+                <configuration>Debug</configuration>
+            </excluded>
         </file>
         <file>
             <name>$PROJ_DIR$\src\startup_TM4C1294.s</name>
@@ -2103,4 +2106,7 @@
             <name>$PROJ_DIR$\src\system_TM4C1294.c</name>
         </file>
     </group>
+    <file>
+        <name>$PROJ_DIR$\main.cpp</name>
+    </file>
 </project>

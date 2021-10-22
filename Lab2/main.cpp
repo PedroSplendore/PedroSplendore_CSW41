@@ -1,5 +1,69 @@
+//*****************************************************************************
+//
+//PEDRO ROMANO SPLENDORE - CSW41
+//
+//*****************************************************************************
 
-int main()
+#include <stdint.h>
+#include <string.h>
+#include <stdbool.h>
+#include <iostream>
+#include "inc/hw_memmap.h"
+#include "driverlib/debug.h"
+#include "driverlib/gpio.h"
+#include "driverlib/sysctl.h"
+#include "driverlib/systick.h"
+#include "driverlib/uart.h"
+#include "driverlib/interrupt.h"
+
+using namespace std;
+
+int timer =0;
+void SysTickIntHandler(void)
 {
-  return 0;
+  if (timer == 0){
+  GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_1, GPIO_PIN_1); // Acende ou apaga LED D1
+  }
+  timer ++;
+}
+
+void GPIOInicialization(void){
+   ///GPIO N/////////////////////////////////
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPION); // Habilita GPIO N (LED D1 = PN1)
+  while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPION)); // Aguarda final da habilitação
+  GPIOPinTypeGPIOOutput(GPIO_PORTN_BASE, GPIO_PIN_1); // LED D1
+   ///GPIO J//////////////////////////////
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOJ); // Habilita GPIO J (push-button SW1 = PJ0)
+  while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOJ)); // Aguarda final da habilitação
+  GPIOPinTypeGPIOInput(GPIO_PORTJ_BASE, GPIO_PIN_0); // push-buttons SW1  
+}
+
+
+int main(void)
+{
+    volatile uint32_t ui32Loop;
+    GPIOInicialization();
+    IntMasterEnable();
+    SysTickIntRegister(SysTickIntHandler);
+    SysTickPeriodSet(10000000); // para clock = 120MHz, logo 12 interrupções do systick = 1 seg
+    SysTickIntEnable();
+    SysTickEnable();
+    //
+    // Loop.
+    //
+   while(1)
+   {
+     if (timer >= 37)
+     {
+      cout <<"Você perdeu";
+      GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_1, 0x0);
+      break;
+     }  
+     if ((GPIOPinRead(GPIO_PORTJ_BASE, GPIO_PIN_0) == 1)) //testa se o SW1 foi pressionado
+     { 
+      GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_1, 0x0);
+      cout << "\n número de clocks foi:"<<timer*10000000<<"\n número de segundos foi:"<<timer/12.0;
+      break;
+     }
+   }
 }

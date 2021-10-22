@@ -23,18 +23,15 @@
 //*****************************************************************************
 
 #include <stdint.h>
-#include <string.h>
 #include <stdbool.h>
-#include <iostream>
 #include "inc/hw_memmap.h"
 #include "driverlib/debug.h"
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/systick.h"
-#include "driverlib/uart.h"
 #include "driverlib/interrupt.h"
 
-using namespace std;
+
 
 //*****************************************************************************
 //
@@ -65,59 +62,45 @@ __error__(char *pcFilename, uint32_t ui32Line)
 //
 //*****************************************************************************
 
-uint8_t LED_D1 = 0;
-int timer =0;
+uint8_t LED_D2 = 0;
 void SysTickIntHandler(void)
 {
-  //cout << "teste";
-  //LED_D1 ^= GPIO_PIN_0; // Troca estado do LED D1
-  //GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_0, LED_D1); // Acende ou apaga LED D1}
-  timer ++;
+  LED_D2 ^= GPIO_PIN_0; // Troca estado do LED D1
+  GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_0, LED_D2); // Acende ou apaga LED D1}
 }
 
-void GPIOInicialization(void){
-   ///GPIO N/////////////////////////////////
-  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPION); // Habilita GPIO N (LED D1 = PN1, LED D2 = PN0)
-  while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPION)); // Aguarda final da habilitação
-  GPIOPinTypeGPIOOutput(GPIO_PORTN_BASE, GPIO_PIN_0); // LEDs D1 e D2 como saída
-   ///GPIO J//////////////////////////////
-  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOJ); // Habilita GPIO J (push-button SW1 = PJ0, push-button SW2 = PJ1)
-  while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOJ)); // Aguarda final da habilitação
-  GPIOPinTypeGPIOInput(GPIO_PORTJ_BASE, GPIO_PIN_0); // push-buttons SW1 e SW2 como entrada  
-}
-
-
-int main(void)
+int
+main(void)
 {
-    int Previous_State;
     volatile uint32_t ui32Loop;
-    GPIOInicialization();
     IntMasterEnable();
     SysTickIntRegister(SysTickIntHandler);
-    SysTickPeriodSet(12000000); // f = 1Hz para clock = 24MHz
+    SysTickPeriodSet(12000000); // para clock = 120MHz, logo 12 interrupções do systick = 1 seg
     SysTickIntEnable();
     SysTickEnable();
-    cout << "teste";
-    cout << LED_D1;
-    GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_0, GPIO_PIN_0);
+    //
+    // Enable the GPIO port that is used for the on-board LED.
+    //
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPION);
+
+    //
+    // Check if the peripheral access is enabled.
+    //
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPION))
+    {
+    }
+
+    //
+    // Enable the GPIO pin for the LED (PN0).  Set the direction as output, and
+    // enable the GPIO pin for digital function.
+    //
+    GPIOPinTypeGPIOOutput(GPIO_PORTN_BASE, GPIO_PIN_0);
+
     //
     // Loop forever.
     //
-    
-   Previous_State = ((GPIOPinRead(GPIO_PORTJ_BASE, GPIO_PIN_0))); //le o estado inicial dos botoes
-   while(1)
-   {
-     if (!Previous_State)//ve se precisa ler novamente ou nao (caso SW1 esteja solto, nao le novamente)
-        Previous_State = ((GPIOPinRead(GPIO_PORTJ_BASE, GPIO_PIN_0)));
-     if(Previous_State)
-     {  
-       if ((GPIOPinRead(GPIO_PORTJ_BASE, GPIO_PIN_0) == 0)) //testa se o SW1 foi pressionado
-       { 
-        GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_0, 0x0);
-        
-       }
-       
-     }
-    
-   }
+    while(1)
+    {
+
+    }
 }

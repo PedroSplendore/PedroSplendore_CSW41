@@ -36,6 +36,7 @@ void GPIOInicialization(void){
   SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOJ); // Habilita GPIO J (push-button SW1 = PJ0)
   while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOJ)); // Aguarda final da habilitação
   GPIOPinTypeGPIOInput(GPIO_PORTJ_BASE, GPIO_PIN_0); // push-buttons SW1  
+  GPIOPadConfigSet(GPIO_PORTJ_BASE, GPIO_PIN_0, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
 }
 
 
@@ -48,6 +49,7 @@ int main(void)
     SysTickPeriodSet(10000000); // para clock = 120MHz, logo 12 interrupções do systick = 1 seg
     SysTickIntEnable();
     SysTickEnable();
+    int flag = 0;
     //
     // Loop.
     //
@@ -55,15 +57,22 @@ int main(void)
    {
      if (timer >= 37)
      {
-      cout <<"Você perdeu";
       GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_1, 0x0);
-      break;
+      cout <<"\nVocê perdeu";
+      flag =1;
      }  
-     if ((GPIOPinRead(GPIO_PORTJ_BASE, GPIO_PIN_0) == 1)) //testa se o SW1 foi pressionado
+     if ((GPIOPinRead(GPIO_PORTJ_BASE, GPIO_PIN_0) == 0)) //testa se o SW1 foi pressionado
      { 
       GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_1, 0x0);
       cout << "\n número de clocks foi:"<<timer*10000000<<"\n número de segundos foi:"<<timer/12.0;
-      break;
+      flag = 1;
      }
+     if (flag == 1){
+        flag = 0;
+
+        SysCtlDelay(120000000);
+        GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_1, GPIO_PIN_1);
+        timer = 0;
+     }  
    }
 }

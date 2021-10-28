@@ -13,11 +13,11 @@ preencheHistograma
   
 
   LDR R10, [R3, R8] ;le o valor da posicao atual do contador de bits
-  ADD R10, #1 ;adiciona um
+  ADD R10, #1 ;adiciona um na posição correspondente ao valor da imagem, sendo passado anteriormente como indice
   
 
   ADD R3, R8 ; adiciona na posicao do contador de bits correspondente ao pixel lido da imagem
-  STR R10, [R3] ;guarda o valor atualizado
+  STR R10, [R3] ;guarda o valor atualizado no vetor de contagem de bits
   
 
   ADD R11, #1 ; contador para ver se chegou no final da imagem ou nao

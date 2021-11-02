@@ -2839,6 +2839,12 @@
             </data>
         </settings>
     </configuration>
+    <group>
+        <name>Libraries</name>
+        <file>
+            <name>$PROJ_DIR$\..\..\TivaWare_C_Series-2.2.0.295\driverlib\ewarm\Exe\driverlib.a</name>
+        </file>
+    </group>
     <file>
         <name>$PROJ_DIR$\main.cpp</name>
     </file>

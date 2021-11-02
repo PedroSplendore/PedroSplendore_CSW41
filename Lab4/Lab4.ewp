@@ -214,7 +214,8 @@
                 </option>
                 <option>
                     <name>CCDefines</name>
-                    <state></state>
+                    <state>PART_TM4C1294NCPDT</state>
+                    <state>TARGET_IS_TM4C129_RA1</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -651,7 +652,7 @@
             <data>
                 <extensions></extensions>
                 <cmdline></cmdline>
-                <hasPrio>1</hasPrio>
+                <hasPrio>112</hasPrio>
                 <buildSequence>inputOutputBased</buildSequence>
             </data>
         </settings>
@@ -744,7 +745,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$TOOLKIT_DIR$\config\linker\TexasInstruments\TM4C1294NC.icf</state>
+                    <state>$TOOLKIT_DIR$\CONFIG\generic_cortex.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -2085,6 +2086,12 @@
             </data>
         </settings>
     </configuration>
+    <group>
+        <name>Libraries</name>
+        <file>
+            <name>$PROJ_DIR$\..\..\TivaWare_C_Series-2.2.0.295\driverlib\ewarm\Exe\driverlib.a</name>
+        </file>
+    </group>
     <file>
         <name>$PROJ_DIR$\main.cpp</name>
     </file>

@@ -2848,4 +2848,10 @@
     <file>
         <name>$PROJ_DIR$\main.cpp</name>
     </file>
+    <file>
+        <name>$PROJ_DIR$\startup_TM4C1294.s</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\system_TM4C1294.c</name>
+    </file>
 </project>
